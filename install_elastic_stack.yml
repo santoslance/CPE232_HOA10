@@ -1,0 +1,42 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install updates (Server1)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "server1"
+
+  - name: install updates (CentOS)
+    tags: always
+    yum:
+      name: "*"
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+- hosts: install_elastic_search_Ubuntu
+  become: true
+  roles:
+    - name: elastic_search_Ubuntu
+
+- hosts: install_kibana_Server1
+  become: true
+  roles:
+    - name: kibana_Server1
+
+- hosts: install_logstash_CentOS
+  become: true
+  roles:
+    - name: logstash_CentOS
+

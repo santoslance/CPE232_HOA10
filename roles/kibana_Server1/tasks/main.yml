@@ -1,0 +1,30 @@
+---
+- name: Add Kibana GPG key (Server1)
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+  when: ansible_distribution == "Server1"
+  become: yes
+
+- name: Add Kibana repository (Server1)
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+  when: ansible_distribution == "Server1" 
+  become: yes
+
+- name: Install Kibana package (Server1)
+  apt:
+    name: kibana
+    state: present
+  when: ansible_distribution == "Server1" 
+  become: yes
+
+- name: Enable and start Kibana service (Server1)
+  systemd:
+    name: kibana
+    enabled: yes
+    state: started
+  when: ansible_distribution == "Server1" 
+  become: yes
+

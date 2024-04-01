@@ -1,0 +1,32 @@
+---
+- name: Install Elasticsearch
+  apt:
+    name: openjdk-8-jdk   # Install Java 8
+    state: present
+  become: yes
+
+- name: Add Elasticsearch GPG key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+  become: yes
+
+- name: Add Elasticsearch repository
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+  become: yes
+
+- name: Install Elasticsearch package
+  apt:
+    name: elasticsearch
+    state: present
+  become: yes
+
+- name: Enable and start Elasticsearch service
+  systemd:
+    name: elasticsearch
+    enabled: yes
+    state: started
+  become: yes
+
